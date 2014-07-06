@@ -20,15 +20,15 @@ module HasBarcode
 
       define_method args.first do
         if options[:type] == :code_128
-          @@barcode_configurations[args.first].barcode_class.new(options[:value].call(self), 'A')
+          @@barcode_configurations[args.first].barcode_class.new(options[:value].call(self), options[:code128])
         else
           @@barcode_configurations[args.first].barcode_class.new(options[:value].call(self))
         end
       end
 
-      define_method "#{args.first}_data" do |*meth_args|
-        if meth_args
-          send(args.first).send("to_#{options[:outputter]}", *meth_args)
+      define_method "#{args.first}_data" do |opts|
+        if opts
+          send(args.first).send("to_#{options[:outputter]}", opts)
         else
           send(args.first).send("to_#{options[:outputter]}")
         end
